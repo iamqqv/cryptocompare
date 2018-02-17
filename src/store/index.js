@@ -9,6 +9,7 @@ Vue.use(VueAxios, axios);
 const store = new Vuex.Store({
     state: {
         coinData: [],
+        coinImageUrl: [],
     },
     actions: {
         GET_COINS_FROM_API() {
@@ -21,18 +22,28 @@ const store = new Vuex.Store({
                 .catch((error) => {
                     console.log(error)
                 });
+        },
+        GET_COIN_IMAGES_FROM_API() {
+            axios.get('https://min-api.cryptocompare.com/data/all/coinlist')
+                .then((response) => {
+                   store.commit('SET_COIN_IMAGE_URL', response.data.Data)
+                });
         }
     },
     mutations: {
         SET_COIN_DATA: function (state, data) {
-            console.log('setting coin data');
             state.coinData = data;
+        },
+        SET_COIN_IMAGE_URL: function (state, data) {
+            state.coinImageUrl = data;
         }
     },
     getters: {
         getCoinData: state => {
-            console.log('getting coin data');
             return state.coinData;
+        },
+        getCoinImageUrl: state => {
+            return state.coinImageUrl;
         }
     }
 });
