@@ -3,7 +3,7 @@
     <tr v-for="coin in coins">
         <td>{{ coin.rank }}</td>
         <td>{{ coin.name }}</td>
-        <td><img v-bind:src="getCoinImage(coin.symbol)"> {{coin.symbol}}</td>
+        <td><img class="coin-img" v-bind:src="getCoinImage(coin.symbol, coin.name)"> {{coin.symbol}}</td>
         <td>{{ coin.price_usd | currency }}</td>
         <td v-bind:style="getColor(coin.percent_change_1h)"><span v-if="coin.percent_change_1h > 0">+</span> {{
             coin.percent_change_1h }} %
@@ -28,9 +28,15 @@
                 return this.$store.getters.getCoinData;
             },
         },
+        created() {
+            setInterval(() => {
+                console.log('updated!');
+                this.$store.dispatch('GET_COINS_FROM_API');
+                this.convertLastUpdated();
+            }, 1000 * 60);
+        },
         mounted() {
             this.$store.dispatch('GET_COINS_FROM_API');
-            this.$store.dispatch('GET_COIN_IMAGES_FROM_API');
         },
         methods: {
             getColor: function (num) {
@@ -40,19 +46,13 @@
                 let d = new Date(lastUpdated * 1000);
                 let hours = (d.getHours() < 10) ? "0" + d.getHours() : d.getHours();
                 let minutes = (d.getMinutes() < 10) ? "0" + d.getMinutes() : d.getMinutes();
-                let formattedTime = hours + ":" + minutes;
-                this.lastUpdated = formattedTime;
 
-                return formattedTime;
+                return hours + ":" + minutes;
             },
-            getCoinImage: function (symbol) {
-                let url = 'https://www.cryptocompare.com/';
-                if (symbol === 'MIOTA') {
-                    return url + this.$store.getters.getCoinImageUrl['IOT'].ImageUrl;
-                }
-                if (this.$store.getters.getCoinImageUrl[symbol] !== undefined) {
-                    return url + this.$store.getters.getCoinImageUrl[symbol].ImageUrl;
-                }
+            getCoinImage: function (symbol, name) {
+                let slug = name.replace(/\s+/g, '-').toLowerCase();
+
+                return 'https://files.coinmarketcap.com/static/img/coins/16x16/' + slug + '.png';
             }
         }
     }
