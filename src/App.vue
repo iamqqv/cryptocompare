@@ -23,14 +23,13 @@
 <script>
     import Coins from './components/Coins'
     import GlobalMarketCap from './components/GlobalMarketCap'
-    let UPDATE_INTERVAL = 60 * 1000;
 
     export default {
         name: 'App',
 
         components: {
-            Coins,
-            GlobalMarketCap
+            'coins': Coins,
+            'global-market-cap': GlobalMarketCap
         },
     }
 </script>
