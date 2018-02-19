@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     },
     actions: {
         GET_COINS_FROM_API() {
-            axios.get('https://api.coinmarketcap.com/v1/ticker/?limit=10')
+            axios.get('https://api.coinmarketcap.com/v1/ticker/?limit=15')
                 .then((response) => {
                     if (response.status === 200) {
                         store.commit('SET_COIN_DATA', response.data);

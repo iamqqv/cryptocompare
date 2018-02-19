@@ -14,7 +14,7 @@ Vue.use(Vuex);
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
-new Vue({
+let crypto = new Vue({
     el: '#app',
     components: {
         App
@@ -22,5 +22,13 @@ new Vue({
     template: '<App/>',
     axios,
     VueAxios,
-    store
+    store,
+    mounted () {
+        setInterval(() => {
+            console.log('updated!');
+            this.$store.dispatch('GET_COINS_FROM_API');
+            // app.convertLastUpdated();
+        }, 1000 * 60)
+    }
 });
+

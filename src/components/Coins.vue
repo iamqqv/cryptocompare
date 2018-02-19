@@ -28,15 +28,10 @@
                 return this.$store.getters.getCoinData;
             },
         },
-        created() {
-            setInterval(() => {
-                console.log('updated!');
-                this.$store.dispatch('GET_COINS_FROM_API');
-                this.convertLastUpdated();
-            }, 1000 * 60);
-        },
         mounted() {
+            console.log('mounted!');
             this.$store.dispatch('GET_COINS_FROM_API');
+            this.convertLastUpdated();
         },
         methods: {
             getColor: function (num) {
